@@ -9,3 +9,6 @@
 .side {
     @apply flex flex-shrink-0 basis-0
 }
+html {
+    background-color: theme(colors.background) !important;
+}
