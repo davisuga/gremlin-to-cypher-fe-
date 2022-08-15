@@ -7,7 +7,9 @@
   margin: 0 auto;
 }
 .side {
-    @apply flex flex-shrink-0 basis-0
+    @apply flex flex-shrink-0 basis-0 ;
+    overflow-wrap: anywhere;
+
 }
 html {
     background-color: theme(colors.background) !important;
