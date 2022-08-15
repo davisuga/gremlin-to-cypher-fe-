@@ -29,20 +29,43 @@ let make = () => {
       throwOnError: false,
       cancelRefetch: false,
     })->ignore
-
-  <div className="flex flex-1 h-screen bg-slate-100">
-    <div className="flex h-full  flex-1 flex-col place-items-center p-3">
-      <p className="text-3xl font-bold text-black"> {"Cypher to Gremlin Online Converter"->s} </p>
-      <input value=cypherContent onChange={updateField(setCypherContent)} />
-      <select name="Flavor" value=selectedOption onChange={updateField(setSelectedOption)}>
-        <option selected={selectedOption == "Neptune"} value="Neptune"> {"Neptune"->s} </option>
-        <option selected={selectedOption == "Cosmos"} value="Cosmos"> {"Cosmos"->s} </option>
-        <option selected={selectedOption == "Tinker"} value="Tinker"> {"Tinker"->s} </option>
-      </select>
-      <button onClick={onClickTranslate} className="p-4 border-black text-black">
-        {"Translate"->s}
-      </button>
-      <input value={queryResult.data->Belt.Option.getWithDefault("")} />
+  queryResult->Js_json.stringifyAny->Belt.Option.getWithDefault("")->Js_console.log
+  <div className=" flex flex-1 h-screen p-3 bg-background container box-border">
+    <div className="flex w-screen grow flex-col place-items-center ">
+      <p className="text-3xl m-4 font-bold text-text">
+        {"Cypher to Gremlin Online Converter"->s}
+      </p>
+      <div className="flex flex-wrap justify-around gap-4 items-start w-full">
+        <textarea
+          value=cypherContent
+          placeholder="Enter Cypher query"
+          className="grow side font-mono  flex min-h-full bg-surface1 p-2 rounded-sm text-text"
+          onChange={updateField(setCypherContent)}
+        />
+        <div className="flex  flex-col gap-4">
+          <div className="dropdown">
+            <label tabIndex=0 className="btn m-1"> {selectedOption->s} </label>
+            <ul
+              tabIndex=0
+              className="dropdown-content menu p-2 shadow bg-surface1 text-text rounded-box ">
+              <li onClick={_ => setSelectedOption(_ => "Neptune")}> <a> {"Neptune"->s} </a> </li>
+              <li onClick={_ => setSelectedOption(_ => "Tinker")}> <a> {"Tinker"->s} </a> </li>
+              <li onClick={_ => setSelectedOption(_ => "Cosmos")}> <a> {"Cosmos"->s} </a> </li>
+            </ul>
+          </div>
+          <button onClick={onClickTranslate} className="btn bg-primary btn-primary">
+            {if queryResult.isFetching {
+              "Loading"
+            } else {
+              "Translate"
+            }->s}
+          </button>
+        </div>
+        <div
+          className="flex side rounded-sm break-words shrink-0 min-h-full bg-surface1 font-mono p-2 grow text-text">
+          {queryResult.data->Belt.Option.getWithDefault("")->s}
+        </div>
+      </div>
     </div>
   </div>
 }
